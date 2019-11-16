@@ -174,7 +174,7 @@ var route = new MaterialPageRoute(
 Widget _showBody(){
       return new Container(
 
-  padding: EdgeInsets.all(16.0),
+  padding: EdgeInsets.zero,
   
   child: Column(
           children: <Widget>[
@@ -182,14 +182,15 @@ Widget _showBody(){
                 padding: EdgeInsets.zero,
                 child: CarouselSlider(
                   items: items,
-                  height: 220,
+                  height: 200,
+                  
                   aspectRatio: 16 / 9,
                   viewportFraction: 0.8,
                   initialPage: 0,
                   enableInfiniteScroll: true,
                   reverse: false,
                   autoPlay: true,
-                  autoPlayInterval: Duration(seconds: 3),
+                  autoPlayInterval: Duration(seconds: 2),
                   autoPlayAnimationDuration: Duration(milliseconds: 800),
                   autoPlayCurve: Curves.fastOutSlowIn,
                   pauseAutoPlayOnTouch: Duration(seconds: 10),
