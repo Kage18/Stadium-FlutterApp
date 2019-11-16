@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:stadium/api/profileApi.dart';
+import 'package:stadium/ui/profilePage.dart';
 
 import '../database.dart';
 
@@ -10,6 +13,10 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+
+
+    bool _isLoading = false;
+
   List<Image> items = [
     Image.asset(
       'assets/images/img1.jpg',
@@ -61,6 +68,104 @@ class _HomePageState extends State<HomePage> {
     super.initState();
   }
 
+ Widget _showCircularProgress() {
+    if (_isLoading) {
+      return Center(
+        child: CircularProgressIndicator(),
+      );
+    }
+    return Container(
+      height: 0.0,
+      width: 0.0,
+    );
+  }
+
+ void toast(String message) {
+    Fluttertoast.showToast(
+        msg: message,
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.CENTER,
+        backgroundColor: Colors.grey,
+        textColor: Colors.black,
+        fontSize: 16.0);
+  }
+
+routeToProfile() async {
+
+  setState(() {
+    _isLoading = true;
+  });
+  QueryResult result = await profileData();
+   if (result.hasErrors) {
+        print("Sorry bruh...");
+        toast(result.errors[0].toString());
+      } else {
+        dynamic user = result.data.data;
+          setState(() {
+    _isLoading = false;
+  });
+
+
+var route = new MaterialPageRoute(
+          builder: (BuildContext context) => new ProfilePage(user: user,),
+        );
+        Navigator.of(context)
+            .push(route);
+
+
+      }
+
+
+}
+
+
+
+
+Widget _showBody(){
+      return new Container(
+
+  padding: EdgeInsets.all(16.0),
+  
+  child: Column(
+          children: <Widget>[
+            Container(
+                padding: EdgeInsets.zero,
+                child: CarouselSlider(
+                  items: items,
+                  height: 220,
+                  aspectRatio: 16 / 9,
+                  viewportFraction: 0.8,
+                  initialPage: 0,
+                  enableInfiniteScroll: true,
+                  reverse: false,
+                  autoPlay: true,
+                  autoPlayInterval: Duration(seconds: 3),
+                  autoPlayAnimationDuration: Duration(milliseconds: 800),
+                  autoPlayCurve: Curves.fastOutSlowIn,
+                  pauseAutoPlayOnTouch: Duration(seconds: 10),
+                  enlargeCenterPage: true,
+                  //onPageChanged: callbackFunction,
+                  scrollDirection: Axis.horizontal,
+                )),
+            new Text(
+              "ABC",
+              style: new TextStyle(
+                color: Colors.black,
+              ),
+              textAlign: TextAlign.left,
+            ),
+          ],
+        ));
+  
+  
+  
+  
+  
+  
+  
+}
+
+
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
@@ -94,8 +199,7 @@ class _HomePageState extends State<HomePage> {
                         style: TextStyle(color: Colors.white, fontSize: 16),
                       ),
                       onTap: () {
-                        print("abc");
-                        profileData();
+                     routeToProfile();
                       },
                     ),
                   ],
@@ -142,7 +246,7 @@ class _HomePageState extends State<HomePage> {
                   // Update the state of the app.
                   // ...
                 },
-              ),
+              ), 
               Divider(
                 height: 15,
                 thickness: 3,
@@ -163,35 +267,18 @@ class _HomePageState extends State<HomePage> {
             ],
           ),
         ),
-        body: Column(
+        body: Stack(
           children: <Widget>[
-            Container(
-                padding: EdgeInsets.zero,
-                child: CarouselSlider(
-                  items: items,
-                  height: 220,
-                  aspectRatio: 16 / 9,
-                  viewportFraction: 0.8,
-                  initialPage: 0,
-                  enableInfiniteScroll: true,
-                  reverse: false,
-                  autoPlay: true,
-                  autoPlayInterval: Duration(seconds: 3),
-                  autoPlayAnimationDuration: Duration(milliseconds: 800),
-                  autoPlayCurve: Curves.fastOutSlowIn,
-                  pauseAutoPlayOnTouch: Duration(seconds: 10),
-                  enlargeCenterPage: true,
-                  //onPageChanged: callbackFunction,
-                  scrollDirection: Axis.horizontal,
-                )),
-            new Text(
-              "ABC",
-              style: new TextStyle(
-                color: Colors.black,
-              ),
-              textAlign: TextAlign.left,
-            ),
+            _showBody(),
+            _showCircularProgress(),
           ],
         ));
   }
+
+
+
+
+
+
+
 }

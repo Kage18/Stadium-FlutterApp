@@ -37,7 +37,7 @@ Future<QueryResult> profileData() async {
 
   //print(result.data.data);
   //print(result.errors[0]);
-print(result.data.data);
+//print(result.data.data);
   // print(result.data.data['tokenAuth']['token']);
   return result;
   /* print("qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq");

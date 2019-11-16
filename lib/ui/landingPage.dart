@@ -45,7 +45,6 @@ class _LandingPageState extends State<LandingPage> {
         backgroundColor: Colors.grey,
         textColor: Colors.black,
         fontSize: 16.0);
-    //Navigator.of(context).pushReplacementNamed('/LoginScreen');
   }
 
   Widget _showCircularProgress() {
@@ -169,7 +168,6 @@ class _LandingPageState extends State<LandingPage> {
       child: DropdownButton<String>(
         hint: Text('Select Gender'),
         value: dropDownValue,
-        
         icon: Icon(Icons.person, color: Colors.grey),
         iconSize: 22,
         elevation: 16,
@@ -326,12 +324,6 @@ class _LandingPageState extends State<LandingPage> {
         print(
             "----------------------------Got Token successfully-----------------");
 
-
-
-
-
-            
-
         setState(() {
           _isLoading = false;
         });
@@ -346,8 +338,6 @@ class _LandingPageState extends State<LandingPage> {
   }
 
   _validateAndSignup() async {
-
-
     setState(() {
       _errorMessage = "";
       _isLoading = true;
