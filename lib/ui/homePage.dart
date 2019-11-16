@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
+import 'package:stadium/api/gamesApi.dart';
 import 'package:stadium/api/profileApi.dart';
 import 'package:stadium/ui/profilePage.dart';
 
 import '../database.dart';
+import 'gamesPage.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -121,6 +123,54 @@ var route = new MaterialPageRoute(
 
 
 
+
+
+
+
+
+
+
+
+_routeToGames() async {
+
+  setState(() {
+    _isLoading = true;
+  });
+  QueryResult result = await allGames();
+   if (result.hasErrors) {
+        print("Sorry bruh...");
+        toast(result.errors[0].toString());
+      } else {
+        dynamic games = result.data.data;
+          setState(() {
+    _isLoading = false;
+  });
+
+
+var route = new MaterialPageRoute(
+          builder: (BuildContext context) => new GamesPage(games: games,),
+        );
+        Navigator.of(context)
+            .push(route);
+
+ 
+      }
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
 Widget _showBody(){
       return new Container(
 
@@ -217,8 +267,7 @@ Widget _showBody(){
                   style: TextStyle(fontSize: 16),
                 ),
                 onTap: () {
-                  // Update the state of the app.
-                  // ...
+                  _routeToGames();
                 },
               ),
               ListTile(
