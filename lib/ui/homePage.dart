@@ -45,10 +45,11 @@ class _HomePageState extends State<HomePage> {
 
     dynamic use = await DBProvider.db.getParameter('Username');
     //print(use.parameterValue);
-    if (use != Null){
-    setState(() {
-      username = use.parameterValue;
-    });}
+    if (use != Null) {
+      setState(() {
+        username = use.parameterValue;
+      });
+    }
 
     print(
         "----------------------------Got Username successfully-----------------");
@@ -65,7 +66,6 @@ class _HomePageState extends State<HomePage> {
     return new Scaffold(
         appBar: new AppBar(centerTitle: true, title: new Text("Stadium")),
         drawer: Drawer(
-          
           child: ListView(
             padding: EdgeInsets.zero,
             children: <Widget>[
@@ -73,7 +73,6 @@ class _HomePageState extends State<HomePage> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    
                     Text(
                       'Hello, $username',
                       style: TextStyle(
@@ -81,16 +80,24 @@ class _HomePageState extends State<HomePage> {
                           fontWeight: FontWeight.bold,
                           fontSize: 22),
                     ),
-                    SizedBox(height: 20,)
-,                    ListTile(
-  contentPadding: EdgeInsets.zero,
-                      leading: Icon(Icons.person,color: Colors.white,),
-                title: Text('My Profile',style: TextStyle(color: Colors.white,fontSize: 16),),
-                onTap: () {
-                  print("abc");
-                  profileData();
-                },
-              ),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    ListTile(
+                      contentPadding: EdgeInsets.zero,
+                      leading: Icon(
+                        Icons.person,
+                        color: Colors.white,
+                      ),
+                      title: Text(
+                        'My Profile',
+                        style: TextStyle(color: Colors.white, fontSize: 16),
+                      ),
+                      onTap: () {
+                        print("abc");
+                        profileData();
+                      },
+                    ),
                   ],
                 ),
                 decoration: BoxDecoration(
@@ -98,41 +105,61 @@ class _HomePageState extends State<HomePage> {
                 ),
               ),
               ListTile(
-                 leading: Icon(Icons.games,),
-                title: Text('Games',style: TextStyle(fontSize: 16),),
-                onTap: () {
-                  // Update the state of the app.
-                  // ...
-                },
-              ),
-               ListTile(
-                 leading: Icon(Icons.store,),
-                title: Text('Merchandise',style: TextStyle(fontSize: 16),),
+                leading: Icon(
+                  Icons.games,
+                ),
+                title: Text(
+                  'Games',
+                  style: TextStyle(fontSize: 16),
+                ),
                 onTap: () {
                   // Update the state of the app.
                   // ...
                 },
               ),
               ListTile(
-                  
-                   leading: Icon(Icons.library_books,),
-                  title: Text('Library',style: TextStyle(fontSize: 16),),
-                  onTap: () {
-              // Update the state of the app.
-              // ...
-                  },
+                leading: Icon(
+                  Icons.store,
                 ),
-                              Divider(height: 15,thickness: 3,),
-                              ListTile(
-                  
-                   leading: Icon(Icons.exit_to_app,),
-                  title: Text('Logout',style: TextStyle(fontSize: 16),),
-                  onTap: () {
-              // Update the state of the app.
-              // ...
-                  },
+                title: Text(
+                  'Merchandise',
+                  style: TextStyle(fontSize: 16),
                 ),
-
+                onTap: () {
+                  // Update the state of the app.
+                  // ...
+                },
+              ),
+              ListTile(
+                leading: Icon(
+                  Icons.library_books,
+                ),
+                title: Text(
+                  'Library',
+                  style: TextStyle(fontSize: 16),
+                ),
+                onTap: () {
+                  // Update the state of the app.
+                  // ...
+                },
+              ),
+              Divider(
+                height: 15,
+                thickness: 3,
+              ),
+              ListTile(
+                leading: Icon(
+                  Icons.exit_to_app,
+                ),
+                title: Text(
+                  'Logout',
+                  style: TextStyle(fontSize: 16),
+                ),
+                onTap: () {
+                  // Update the state of the app.
+                  // ...
+                },
+              ),
             ],
           ),
         ),

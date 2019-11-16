@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'package:graphql_flutter/graphql_flutter.dart';
-import '../graphQlConf.dart';
 import '../main.dart';
 
 Future<QueryResult> profileData() async {
