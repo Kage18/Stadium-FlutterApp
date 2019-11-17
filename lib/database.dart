@@ -30,19 +30,16 @@ class DBProvider {
           parameterName Text PRIMARY KEY,
           parameterValue TEXT
           )
-          '''
-          );
+          ''');
     });
   }
 
-
-newParameter(Parameter newParameter) async {
+  newParameter(Parameter newParameter) async {
     print('''INSERT Into parameters (parameterName,parameterValue)
        VALUES ('${newParameter.parameterName}','${newParameter.parameterValue}');
        ''');
 
-
-           final db = await database;
+    final db = await database;
 
     var res = await db.rawInsert('''
 
@@ -52,12 +49,10 @@ newParameter(Parameter newParameter) async {
     return res;
   }
 
-
   getParameter(String parameterName) async {
     final db = await database;
-    var res =await  db.query("Parameters", where: "parameterName = ?", whereArgs: [parameterName]);
-    return res.isNotEmpty ? Parameter.fromMap(res.first) : Null ;
+    var res = await db.query("Parameters",
+        where: "parameterName = ?", whereArgs: [parameterName]);
+    return res.isNotEmpty ? Parameter.fromMap(res.first) : Null;
   }
-
-
 }

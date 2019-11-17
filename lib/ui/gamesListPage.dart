@@ -3,15 +3,15 @@ import 'package:stadium/config/config.dart';
 
 import 'gamePage.dart';
 
-class GamesPage extends StatefulWidget {
-  GamesPage({this.games});
+class GamesListPage extends StatefulWidget {
+  GamesListPage({this.games});
 
   final dynamic games;
   @override
-  State<StatefulWidget> createState() => new _GamesPageState();
+  State<StatefulWidget> createState() => new _GamesListPageState();
 }
 
-class _GamesPageState extends State<GamesPage> {
+class _GamesListPageState extends State<GamesListPage> {
   @override
   void initState() {
     super.initState();

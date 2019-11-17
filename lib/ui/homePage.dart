@@ -3,11 +3,70 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:stadium/api/gamesApi.dart';
-import 'package:stadium/api/profileApi.dart';
+import 'package:stadium/api/merchandiseApi.dart';
+import 'package:stadium/api/userApi.dart';
 import 'package:stadium/ui/profilePage.dart';
 
 import '../database.dart';
-import 'gamesPage.dart';
+
+import 'dart:async';
+
+import 'gamesListPage.dart';
+import 'libraryPage.dart';
+import 'merchandiseListPage.dart';
+
+class ShowUp extends StatefulWidget {
+  final Widget child;
+  final int delay;
+
+  ShowUp({@required this.child, this.delay});
+
+  @override
+  _ShowUpState createState() => _ShowUpState();
+}
+
+class _ShowUpState extends State<ShowUp> with TickerProviderStateMixin {
+  AnimationController _animController;
+  Animation<Offset> _animOffset;
+
+  @override
+  void initState() {
+    super.initState();
+
+    _animController =
+        AnimationController(vsync: this, duration: Duration(milliseconds: 500));
+    final curve =
+        CurvedAnimation(curve: Curves.decelerate, parent: _animController);
+    _animOffset =
+        Tween<Offset>(begin: const Offset(0.0, 0.35), end: Offset.zero)
+            .animate(curve);
+
+    if (widget.delay == null) {
+      _animController.forward();
+    } else {
+      Timer(Duration(milliseconds: widget.delay), () {
+        _animController.forward();
+      });
+    }
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _animController.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return FadeTransition(
+      child: SlideTransition(
+        position: _animOffset,
+        child: widget.child,
+      ),
+      opacity: _animController,
+    );
+  }
+}
 
 class HomePage extends StatefulWidget {
   @override
@@ -15,11 +74,10 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  bool _isLoading = false;
+  int delayAmount = 600;
 
-
-    bool _isLoading = false;
-
-  List<Image> items = [
+  /* List<Image> items = [
     Image.asset(
       'assets/images/img1.jpg',
       height: 200,
@@ -44,6 +102,57 @@ class _HomePageState extends State<HomePage> {
       'assets/images/img6.jpg',
       height: 200,
     ),
+  ]; */
+
+  List<Widget> items = [
+    Container(
+        padding: EdgeInsets.fromLTRB(10, 10, 10, 20),
+        height: 200,
+        decoration: new BoxDecoration(
+            shape: BoxShape.rectangle,
+            image: DecorationImage(
+                image: AssetImage('assets/images/img1.jpg'),
+                fit: BoxFit.fill))),
+    Container(
+        padding: EdgeInsets.fromLTRB(10, 10, 10, 20),
+        height: 200,
+        decoration: new BoxDecoration(
+            shape: BoxShape.rectangle,
+            image: DecorationImage(
+                image: AssetImage('assets/images/img2.jpg'),
+                fit: BoxFit.fill))),
+    Container(
+        padding: EdgeInsets.fromLTRB(10, 10, 10, 20),
+        height: 200,
+        decoration: new BoxDecoration(
+            shape: BoxShape.rectangle,
+            image: DecorationImage(
+                image: AssetImage('assets/images/img3.jpg'),
+                fit: BoxFit.fill))),
+    Container(
+        padding: EdgeInsets.fromLTRB(10, 10, 10, 20),
+        height: 200,
+        decoration: new BoxDecoration(
+            shape: BoxShape.rectangle,
+            image: DecorationImage(
+                image: AssetImage('assets/images/img4.jpg'),
+                fit: BoxFit.fill))),
+    Container(
+        padding: EdgeInsets.fromLTRB(10, 10, 10, 20),
+        height: 200,
+        decoration: new BoxDecoration(
+            shape: BoxShape.rectangle,
+            image: DecorationImage(
+                image: AssetImage('assets/images/img5.jpg'),
+                fit: BoxFit.fill))),
+    Container(
+        padding: EdgeInsets.fromLTRB(10, 10, 10, 20),
+        height: 200,
+        decoration: new BoxDecoration(
+            shape: BoxShape.rectangle,
+            image: DecorationImage(
+                image: AssetImage('assets/images/img6.jpg'),
+                fit: BoxFit.fill))),
   ];
 
   String username = "User";
@@ -70,7 +179,7 @@ class _HomePageState extends State<HomePage> {
     super.initState();
   }
 
- Widget _showCircularProgress() {
+  Widget _showCircularProgress() {
     if (_isLoading) {
       return Center(
         child: CircularProgressIndicator(),
@@ -82,7 +191,20 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
- void toast(String message) {
+  Widget _showHeading() {
+    return ShowUp(
+      delay: delayAmount,
+      child: Container(
+          alignment: Alignment.center,
+          padding: EdgeInsets.fromLTRB(10, 30, 10, 10),
+          child: new Text(
+            "Welcome to Stadium!",
+            style: TextStyle(fontSize: 28, fontStyle: FontStyle.italic),
+          )),
+    );
+  }
+
+  void toast(String message) {
     Fluttertoast.showToast(
         msg: message,
         toastLength: Toast.LENGTH_SHORT,
@@ -92,98 +214,119 @@ class _HomePageState extends State<HomePage> {
         fontSize: 16.0);
   }
 
-routeToProfile() async {
+  routeToProfile() async {
+    setState(() {
+      _isLoading = true;
+    });
+    QueryResult result = await profileData();
+    if (result.hasErrors) {
+      print("Sorry bruh...");
+      toast(result.errors[0].toString());
+    } else {
+      dynamic user = result.data.data;
+      setState(() {
+        _isLoading = false;
+      });
 
-  setState(() {
-    _isLoading = true;
-  });
-  QueryResult result = await profileData();
-   if (result.hasErrors) {
+      var route = new MaterialPageRoute(
+        builder: (BuildContext context) => new ProfilePage(
+          user: user,
+        ),
+      );
+      Navigator.of(context).push(route);
+    }
+  }
+
+  _routeToGames() async {
+    setState(() {
+      _isLoading = true;
+    });
+    QueryResult result = await allGames();
+    if (result.hasErrors) {
+      print("Sorry bruh...");
+      toast(result.errors[0].toString());
+    } else {
+      dynamic games = result.data.data;
+      setState(() {
+        _isLoading = false;
+      });
+
+      var route = new MaterialPageRoute(
+        builder: (BuildContext context) => new GamesListPage(
+          games: games,
+        ),
+      );
+      Navigator.of(context).push(route);
+    }
+  }
+
+  _routeToAllMerchandise() async {
+    setState(() {
+      _isLoading = true;
+    });
+    QueryResult result = await allMerchandise();
+    if (result.hasErrors) {
+      print("Sorry bruh...");
+      toast(result.errors[0].toString());
+    } else {
+      dynamic allMerchandise = result.data.data;
+      setState(() {
+        _isLoading = false;
+      });
+
+      var route = new MaterialPageRoute(
+        builder: (BuildContext context) => new MerchandiseListPage(
+          allMerchandise: allMerchandise,
+        ),
+      );
+      Navigator.of(context).push(route);
+    }
+  }
+
+  _routeToLibrary() async {
+    setState(() {
+      _isLoading = true;
+    });
+    QueryResult result = await getUserId();
+    if (result.hasErrors) {
+      print("Sorry bruh...");
+      toast(result.errors[0].toString());
+    } else {
+      int id = int.parse(result.data.data['me']['id']);
+      print(id);
+
+      QueryResult library = await getLibrary(id);
+      if (result.hasErrors) {
         print("Sorry bruh...");
-        toast(result.errors[0].toString());
+        toast(library.errors[0].toString());
       } else {
-        dynamic user = result.data.data;
-          setState(() {
-    _isLoading = false;
-  });
+        dynamic libraryData = library.data.data;
+        setState(() {
+          _isLoading = false;
+        });
+        print(libraryData);
 
-
-var route = new MaterialPageRoute(
-          builder: (BuildContext context) => new ProfilePage(user: user,),
+        var route = new MaterialPageRoute(
+          builder: (BuildContext context) => new LibraryPage(
+            library: libraryData,
+          ),
         );
-        Navigator.of(context)
-            .push(route);
-
-
+        Navigator.of(context).push(route);
       }
+    }
+  }
 
-
-}
-
-
-
-
-
-
-
-
-
-
-
-
-_routeToGames() async {
-
-  setState(() {
-    _isLoading = true;
-  });
-  QueryResult result = await allGames();
-   if (result.hasErrors) {
-        print("Sorry bruh...");
-        toast(result.errors[0].toString());
-      } else {
-        dynamic games = result.data.data;
-          setState(() {
-    _isLoading = false;
-  });
-
-
-var route = new MaterialPageRoute(
-          builder: (BuildContext context) => new GamesPage(games: games,),
-        );
-        Navigator.of(context)
-            .push(route);
-
- 
-      }
-
-
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-Widget _showBody(){
-      return new Container(
-
-  padding: EdgeInsets.zero,
-  
-  child: Column(
+  Widget _showBody() {
+    return new Container(
+        padding: EdgeInsets.zero,
+        child: Column(
           children: <Widget>[
             Container(
                 padding: EdgeInsets.zero,
                 child: CarouselSlider(
                   items: items,
                   height: 200,
-                  
+
                   aspectRatio: 16 / 9,
                   viewportFraction: 0.8,
                   initialPage: 0,
@@ -198,29 +341,15 @@ Widget _showBody(){
                   //onPageChanged: callbackFunction,
                   scrollDirection: Axis.horizontal,
                 )),
-            new Text(
-              "ABC",
-              style: new TextStyle(
-                color: Colors.black,
-              ),
-              textAlign: TextAlign.left,
-            ),
+            _showHeading(),
           ],
         ));
-  
-  
-  
-  
-  
-  
-  
-}
-
+  }
 
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
-        appBar: new AppBar(centerTitle: true, title: new Text("Stadium")),
+        appBar: new AppBar(centerTitle: true, title: new Text("Home")),
         drawer: Drawer(
           child: ListView(
             padding: EdgeInsets.zero,
@@ -250,7 +379,7 @@ Widget _showBody(){
                         style: TextStyle(color: Colors.white, fontSize: 16),
                       ),
                       onTap: () {
-                     routeToProfile();
+                        routeToProfile();
                       },
                     ),
                   ],
@@ -280,8 +409,7 @@ Widget _showBody(){
                   style: TextStyle(fontSize: 16),
                 ),
                 onTap: () {
-                  // Update the state of the app.
-                  // ...
+                  _routeToAllMerchandise();
                 },
               ),
               ListTile(
@@ -293,10 +421,9 @@ Widget _showBody(){
                   style: TextStyle(fontSize: 16),
                 ),
                 onTap: () {
-                  // Update the state of the app.
-                  // ...
+                  _routeToLibrary();
                 },
-              ), 
+              ),
               Divider(
                 height: 15,
                 thickness: 3,
@@ -324,11 +451,4 @@ Widget _showBody(){
           ],
         ));
   }
-
-
-
-
-
-
-
 }

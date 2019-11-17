@@ -2,18 +2,19 @@ import 'dart:async';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import '../main.dart';
 
-Future<QueryResult> allGames() async {
-  String allGames = '''
+Future<QueryResult> profileData() async {
+  String profile = '''
 
       query{
-          games{
+          me{
+            Customer{username}
               id 
-              name
-              description
-              price
-              images{
-                url
-              } 
+              DOB
+              gender
+              phoneNo
+              bio
+              joined
+              avatar 
             }
           }
 
@@ -25,7 +26,7 @@ Future<QueryResult> allGames() async {
   GraphQLClient _client = graphQLConfiguration.clientToQuery();
   QueryResult result = await _client.query(
     QueryOptions(
-      document: allGames,
+      document: profile,
     ),
   );
 
@@ -34,7 +35,7 @@ Future<QueryResult> allGames() async {
 
   //print(result.data.data);
   //print(result.errors[0]);
-  print(result.data.data);
+//print(result.data.data);
   // print(result.data.data['tokenAuth']['token']);
   return result;
   /* print("qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq");
@@ -48,35 +49,25 @@ else{
   return(result.data.data['tokenAuth']['token']);}*/
 }
 
-Future<QueryResult> getLibrary(int id) async {
-  String getLibrary = '''
+Future<QueryResult> getUserId() async {
+  String getUserId = '''
 
       query{
-          gameOwned(userId: $id){
-            game{
-              id
-              name
-            }
-            hoursPlayed
-            rating
-            customer{
-              id
-              Customer{
-                username
-              }
-            }
+          me{
+            Customer{username}
+              id 
             }
           }
 
     ''';
   //print(signupMutation);
 
-  print("/*-/*-/*-/*-Trying to get Data/*-/*-/*-/*-/*-/*-");
+  print("/*-/*-/*-/*-Trying to get UserId/*-/*-/*-/*-/*-/*-");
 
   GraphQLClient _client = graphQLConfiguration.clientToQuery();
   QueryResult result = await _client.query(
     QueryOptions(
-      document: getLibrary,
+      document: getUserId,
     ),
   );
 
@@ -84,8 +75,8 @@ Future<QueryResult> getLibrary(int id) async {
       "qqqqqqqqqqqq----------------------------------------------qqqqqqqqqqqqqqq");
 
   //print(result.data.data);
-  //print(result.errors[0]);
-  //print(result.data.data);
+  // print(result.errors[0]);
+//print(result.data.data);
   // print(result.data.data['tokenAuth']['token']);
   return result;
   /* print("qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq");

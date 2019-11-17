@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:stadium/config/config.dart';
 
@@ -56,15 +55,15 @@ class _ShowUpState extends State<ShowUp> with TickerProviderStateMixin {
   }
 }
 
-class GamePage extends StatefulWidget {
-  GamePage({this.game});
+class MerchandisePage extends StatefulWidget {
+  MerchandisePage({this.merchandise});
 
-  final dynamic game;
+  final dynamic merchandise;
   @override
-  State<StatefulWidget> createState() => new _GamePageState();
+  State<StatefulWidget> createState() => new _MerchandisePageState();
 }
 
-class _GamePageState extends State<GamePage> {
+class _MerchandisePageState extends State<MerchandisePage> {
   int delayAmount = 600;
 
   @override
@@ -85,7 +84,7 @@ class _GamePageState extends State<GamePage> {
                 image: new DecorationImage(
                     fit: BoxFit.fill,
                     image: new NetworkImage(
-                        serverUrl + widget.game['images'][0]['url'])))),
+                        serverUrl + widget.merchandise['images'][0]['url'])))),
       ),
     );
   }
@@ -97,7 +96,7 @@ class _GamePageState extends State<GamePage> {
           alignment: Alignment.center,
           padding: EdgeInsets.fromLTRB(10, 30, 10, 10),
           child: new Text(
-            widget.game['name'],
+            widget.merchandise['name'],
             style: TextStyle(fontSize: 28, fontWeight: FontWeight.w400),
           )),
     );
@@ -105,14 +104,15 @@ class _GamePageState extends State<GamePage> {
 
   Widget _showDescription() {
     return ShowUp(
-        delay: delayAmount + 200,
-        child: Container(
-            alignment: Alignment.topLeft,
-            padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
-            child: new Text(
-              widget.game['description'],
-              style: TextStyle(fontSize: 22, fontWeight: FontWeight.w400),
-            )));
+      delay: delayAmount + 200,
+      child: Container(
+          alignment: Alignment.topLeft,
+          padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
+          child: new Text(
+            widget.merchandise['desc'],
+            style: TextStyle(fontSize: 22, fontWeight: FontWeight.w400),
+          )),
+    );
   }
 
   Widget _showButtons() {
@@ -122,13 +122,14 @@ class _GamePageState extends State<GamePage> {
           alignment: Alignment.topLeft,
           padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
           child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: <Widget>[
               MaterialButton(
                 shape: RoundedRectangleBorder(
                     borderRadius: new BorderRadius.circular(18.0)),
                 elevation: 5.0,
-                minWidth: 150,
-                height: 42.0,
+                minWidth: 250,
+                height: 50.0,
                 color: Colors.blue,
                 child: Row(
                   children: <Widget>[
@@ -148,34 +149,6 @@ class _GamePageState extends State<GamePage> {
                   print("hello");
                 },
               ),
-              SizedBox(
-                width: 20,
-              ),
-              MaterialButton(
-                shape: RoundedRectangleBorder(
-                    borderRadius: new BorderRadius.circular(18.0)),
-                elevation: 5.0,
-                minWidth: 150,
-                height: 42.0,
-                color: Colors.blue,
-                child: Row(
-                  children: <Widget>[
-                    Icon(
-                      Icons.play_arrow,
-                      color: Colors.white,
-                    ),
-                    SizedBox(
-                      width: 10,
-                    ),
-                    Text('Play',
-                        style:
-                            new TextStyle(fontSize: 20.0, color: Colors.white)),
-                  ],
-                ),
-                onPressed: () {
-                  print("hello");
-                },
-              ),
             ],
           )),
     );
@@ -186,7 +159,7 @@ class _GamePageState extends State<GamePage> {
     return new Scaffold(
       appBar: new AppBar(
         centerTitle: true,
-        title: new Text(widget.game['name']),
+        title: new Text(widget.merchandise['name']),
       ),
       body: ListView(
         children: <Widget>[
