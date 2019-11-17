@@ -55,4 +55,15 @@ class DBProvider {
         where: "parameterName = ?", whereArgs: [parameterName]);
     return res.isNotEmpty ? Parameter.fromMap(res.first) : Null;
   }
+
+
+deleteTable(String tableName) async {
+      final db = await database;
+    await db.execute('''DELETE FROM '$tableName';''');
+    return;
+}
+
+
+
+
 }

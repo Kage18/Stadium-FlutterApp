@@ -214,7 +214,7 @@ class _LandingPageState extends State<LandingPage> {
   Widget _showSecondaryButton() {
     return FlatButton(
       child: _formMode == FormMode.LOGIN
-          ? new Text('Create an account',
+          ? new Text('New to Stadium? Create an account',
               style: new TextStyle(fontSize: 18.0, fontWeight: FontWeight.w300))
           : new Text('Have an account? Sign in',
               style:
@@ -367,10 +367,10 @@ class _LandingPageState extends State<LandingPage> {
       print("****************************************");
       print(gender);
       print(formatted);
-      print(int.parse(_phone));
-      int x = int.parse(_phone);
+     /*  print(int.parse(_phone));
+      int x = int.parse(_phone); */
       QueryResult result =
-          await signup(_username, _email, _password, formatted, x, gender);
+          await signup(_username, _email, _password, formatted, _phone, gender);
 
       print("----------------------------Back with response-----------------");
       if (result.hasErrors) {

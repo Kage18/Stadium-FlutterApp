@@ -12,6 +12,7 @@ import '../database.dart';
 import 'dart:async';
 
 import 'gamesListPage.dart';
+import 'landingPage.dart';
 import 'libraryPage.dart';
 import 'merchandiseListPage.dart';
 
@@ -107,7 +108,7 @@ class _HomePageState extends State<HomePage> {
   List<Widget> items = [
     Container(
         padding: EdgeInsets.fromLTRB(10, 10, 10, 20),
-        height: 200,
+        height: 500,
         decoration: new BoxDecoration(
             shape: BoxShape.rectangle,
             image: DecorationImage(
@@ -115,7 +116,7 @@ class _HomePageState extends State<HomePage> {
                 fit: BoxFit.fill))),
     Container(
         padding: EdgeInsets.fromLTRB(10, 10, 10, 20),
-        height: 200,
+        height: 500,
         decoration: new BoxDecoration(
             shape: BoxShape.rectangle,
             image: DecorationImage(
@@ -123,7 +124,7 @@ class _HomePageState extends State<HomePage> {
                 fit: BoxFit.fill))),
     Container(
         padding: EdgeInsets.fromLTRB(10, 10, 10, 20),
-        height: 200,
+        height: 500,
         decoration: new BoxDecoration(
             shape: BoxShape.rectangle,
             image: DecorationImage(
@@ -131,7 +132,7 @@ class _HomePageState extends State<HomePage> {
                 fit: BoxFit.fill))),
     Container(
         padding: EdgeInsets.fromLTRB(10, 10, 10, 20),
-        height: 200,
+        height: 500,
         decoration: new BoxDecoration(
             shape: BoxShape.rectangle,
             image: DecorationImage(
@@ -139,7 +140,7 @@ class _HomePageState extends State<HomePage> {
                 fit: BoxFit.fill))),
     Container(
         padding: EdgeInsets.fromLTRB(10, 10, 10, 20),
-        height: 200,
+        height: 500,
         decoration: new BoxDecoration(
             shape: BoxShape.rectangle,
             image: DecorationImage(
@@ -147,7 +148,7 @@ class _HomePageState extends State<HomePage> {
                 fit: BoxFit.fill))),
     Container(
         padding: EdgeInsets.fromLTRB(10, 10, 10, 20),
-        height: 200,
+        height: 500,
         decoration: new BoxDecoration(
             shape: BoxShape.rectangle,
             image: DecorationImage(
@@ -197,9 +198,85 @@ class _HomePageState extends State<HomePage> {
       child: Container(
           alignment: Alignment.center,
           padding: EdgeInsets.fromLTRB(10, 30, 10, 10),
+          child: new Text("Welcome to Stadium!",
+              style: TextStyle(
+                fontSize: 28,
+                fontStyle: FontStyle.italic,
+              ))),
+    );
+  }
+
+  Widget _showIntro1() {
+    return ShowUp(
+      delay: delayAmount + 300,
+      child: Container(
+          alignment: Alignment.center,
+          padding: EdgeInsets.fromLTRB(10, 30, 10, 0),
           child: new Text(
-            "Welcome to Stadium!",
-            style: TextStyle(fontSize: 28, fontStyle: FontStyle.italic),
+            '     Stadium lets you enjoy retro games on your screen, without even a console.',
+            style: TextStyle(
+              fontSize: 20,
+            ),
+          )),
+    );
+  }
+
+  Widget _showIntro2() {
+    return ShowUp(
+      delay: delayAmount + 400,
+      child: Container(
+          alignment: Alignment.center,
+          padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
+          child: new Text(
+            '     Play across laptops, desktops, phones.',
+            style: TextStyle(
+              fontSize: 20,
+            ),
+          )),
+    );
+  }
+
+  Widget _showIntro3() {
+    return ShowUp(
+      delay: delayAmount + 500,
+      child: Container(
+          alignment: Alignment.center,
+          padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
+          child: new Text(
+            '     Now you can start playing games without downloading new content on your devices.',
+            style: TextStyle(
+              fontSize: 20,
+            ),
+          )),
+    );
+  }
+
+  Widget _showIntro4() {
+    return ShowUp(
+      delay: delayAmount + 700,
+      child: Container(
+          alignment: Alignment.center,
+          padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
+          child: new Text(
+            '     Excel in your favorite games as your name rise in our global leaderboards.',
+            style: TextStyle(
+              fontSize: 20,
+            ),
+          )),
+    );
+  }
+
+  Widget _showIntro5() {
+    return ShowUp(
+      delay: delayAmount + 900,
+      child: Container(
+          alignment: Alignment.center,
+          padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
+          child: new Text(
+            '     Buy merchandise of the games you love.',
+            style: TextStyle(
+              fontSize: 20,
+            ),
           )),
     );
   }
@@ -316,12 +393,30 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
+  _logout() async {
+    await DBProvider.db.deleteTable('Parameters');
+    var route = new MaterialPageRoute(
+          builder: (BuildContext context) => new LandingPage(),
+        );
+        Navigator.of(context)
+            .pushAndRemoveUntil(route, (Route<dynamic> route) => false);
+
+  }
+
+  Widget _showBackground() {
+    return Container(
+      color: Colors.black,
+    );
+  }
+
   Widget _showBody() {
     return new Container(
         padding: EdgeInsets.zero,
-        child: Column(
+        child: ListView(
           children: <Widget>[
             Container(
+                alignment: Alignment.topCenter,
+                height: 200,
                 padding: EdgeInsets.zero,
                 child: CarouselSlider(
                   items: items,
@@ -342,6 +437,11 @@ class _HomePageState extends State<HomePage> {
                   scrollDirection: Axis.horizontal,
                 )),
             _showHeading(),
+            _showIntro1(),
+            _showIntro2(),
+            _showIntro3(),
+            _showIntro4(),
+            _showIntro5(),
           ],
         ));
   }
@@ -437,8 +537,7 @@ class _HomePageState extends State<HomePage> {
                   style: TextStyle(fontSize: 16),
                 ),
                 onTap: () {
-                  // Update the state of the app.
-                  // ...
+                 _logout();
                 },
               ),
             ],
@@ -446,6 +545,7 @@ class _HomePageState extends State<HomePage> {
         ),
         body: Stack(
           children: <Widget>[
+            // _showBackground(),
             _showBody(),
             _showCircularProgress(),
           ],

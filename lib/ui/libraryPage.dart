@@ -36,8 +36,7 @@ class _LibraryPageState extends State<LibraryPage> {
           "Played: " + game['hoursPlayed'],
 
           /* style: TextStyle(
-  
-                                fontSize: 22, fontWeight: FontWeight.w400), */
+          fontSize: 22, fontWeight: FontWeight.w400), */
         ),
         trailing: Icon(
           Icons.play_arrow,
