@@ -74,8 +74,12 @@ class _MerchandiseListPageState extends State<MerchandiseListPage> {
           centerTitle: true,
           title: new Text("Merchandise"),
         ),
-        body:
-                widget.allMerchandise["merchs"].length == 0 ? Text("Sorry, No Merch to display :(", style: TextStyle(color: Colors.black, fontSize: 25),) :
+        body: widget.allMerchandise["merchs"].length == 0
+            ? Text(
+                "Sorry, No Merch to display :(",
+                style: TextStyle(color: Colors.black, fontSize: 25),
+              )
+            :
 
             /*  Column(
         children: <Widget>[
@@ -84,11 +88,11 @@ class _MerchandiseListPageState extends State<MerchandiseListPage> {
       ) */
 
             GridView.count(
-          crossAxisCount: 2,
-          children:
-              List.generate(widget.allMerchandise['merchs'].length, (index) {
-            return merchGrid(widget.allMerchandise['merchs'][index]);
-          }),
-        ));
+                crossAxisCount: 2,
+                children: List.generate(widget.allMerchandise['merchs'].length,
+                    (index) {
+                  return merchGrid(widget.allMerchandise['merchs'][index]);
+                }),
+              ));
   }
 }

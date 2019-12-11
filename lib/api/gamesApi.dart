@@ -107,12 +107,6 @@ else{
   return(result.data.data['tokenAuth']['token']);}*/
 }
 
-
-
-
-
-
-
 Future<QueryResult> buyGame(String gameId) async {
   String buyGame = '''
 

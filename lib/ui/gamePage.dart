@@ -62,7 +62,7 @@ class _ShowUpState extends State<ShowUp> with TickerProviderStateMixin {
 }
 
 class GamePage extends StatefulWidget {
-  GamePage({this.game,this.username});
+  GamePage({this.game, this.username});
 
   final dynamic game;
   final String username;
@@ -77,7 +77,8 @@ class _GamePageState extends State<GamePage> {
   void initState() {
     super.initState();
   }
- void toast(String message) {
+
+  void toast(String message) {
     Fluttertoast.showToast(
         msg: message,
         toastLength: Toast.LENGTH_SHORT,
@@ -87,37 +88,33 @@ class _GamePageState extends State<GamePage> {
         fontSize: 16.0);
   }
 
+  buy() async {
+    QueryResult result = await buyGame(widget.game['id']);
 
-buy() async {
-      QueryResult result = await buyGame(widget.game['id']);
-
-       if (result.hasErrors) {
+    if (result.hasErrors) {
       print("Sorry bruh...");
       toast(result.errors[0].toString());
-    }else{
+    } else {
       toast("Successfully Bought");
-       var route = new MaterialPageRoute(
-          builder: (BuildContext context) => new HomePage(),
-        );
-        Navigator.of(context)
-            .pushAndRemoveUntil(route, (Route<dynamic> route) => false);
-
+      var route = new MaterialPageRoute(
+        builder: (BuildContext context) => new HomePage(),
+      );
+      Navigator.of(context)
+          .pushAndRemoveUntil(route, (Route<dynamic> route) => false);
     }
+  }
 
-}
-
-
-
-
-
-void _showDialog() {
+  void _showDialog() {
     showDialog(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
           title: new Text("Buy " + widget.game['name']),
-          content: new Text(
-              "Buy "+ widget.game['name']+ "for Rs. "+ widget.game['price'].toString()+" ?"),
+          content: new Text("Buy " +
+              widget.game['name'] +
+              "for Rs. " +
+              widget.game['price'].toString() +
+              " ?"),
           actions: <Widget>[
             new FlatButton(
               child: new Text("Cancel"),
@@ -137,25 +134,6 @@ void _showDialog() {
       },
     );
   }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
   Widget _showImage() {
     return ShowUp(
@@ -200,208 +178,118 @@ void _showDialog() {
             )));
   }
 
-
-
-
-
   Widget _showButtons() {
+    int c = 0;
+    for (int i = 0; i < widget.game["gameOwnedSet"].length; i++) {
+      if (widget.username ==
+          widget.game["gameOwnedSet"][i]["customer"]["Customer"]["username"]) {
+        c = 1;
+      }
+    }
 
-
-
-int c = 0;
-for(int i = 0; i < widget.game["gameOwnedSet"].length; i++) {
-  if(widget.username == widget.game["gameOwnedSet"][i]["customer"]["Customer"]["username"]){
-    c = 1;
-  }
-}
-
-
-
-if(c == 0){
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    
-    return ShowUp(
-      delay: delayAmount + 500,
-      child: Container(
-          alignment: Alignment.topLeft,
-          padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
-          child: Row(
-            children: <Widget>[
-              MaterialButton(
-                shape: RoundedRectangleBorder(
-                    borderRadius: new BorderRadius.circular(18.0)),
-                elevation: 5.0,
-                minWidth: 150,
-                height: 42.0,
-                color: colorCustom,
-                child: Row(
-                  children: <Widget>[
-                    Icon(
-                      Icons.shopping_cart,
-                      color: Colors.white,
-                    ),
-                    SizedBox(
-                      width: 10,
-                    ),
-                    Text('Buy',
-                        style:
-                            new TextStyle(fontSize: 20.0, color: Colors.white)),
-                  ],
+    if (c == 0) {
+      return ShowUp(
+        delay: delayAmount + 500,
+        child: Container(
+            alignment: Alignment.topLeft,
+            padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
+            child: Row(
+              children: <Widget>[
+                MaterialButton(
+                  shape: RoundedRectangleBorder(
+                      borderRadius: new BorderRadius.circular(18.0)),
+                  elevation: 5.0,
+                  minWidth: 150,
+                  height: 42.0,
+                  color: colorCustom,
+                  child: Row(
+                    children: <Widget>[
+                      Icon(
+                        Icons.shopping_cart,
+                        color: Colors.white,
+                      ),
+                      SizedBox(
+                        width: 10,
+                      ),
+                      Text('Buy',
+                          style: new TextStyle(
+                              fontSize: 20.0, color: Colors.white)),
+                    ],
+                  ),
+                  onPressed: () {
+                    print("hello");
+                    _showDialog();
+                  },
                 ),
-                onPressed: () {
-                  print("hello");
-                  _showDialog();
-                },
-              ),
-              SizedBox(
-                width: 20,
-              ),
-              MaterialButton(
-                shape: RoundedRectangleBorder(
-                    borderRadius: new BorderRadius.circular(18.0)),
-                elevation: 5.0,
-                minWidth: 150,
-                height: 42.0,
-                color: colorCustom,
-                child: Row(
-                  children: <Widget>[
-                    Icon(
-                      Icons.play_arrow,
-                      color: Colors.white,
-                    ),
-                    SizedBox(
-                      width: 10,
-                    ),
-                    Text('Play',
-                        style:
-                            new TextStyle(fontSize: 20.0, color: Colors.white)),
-                  ],
+                SizedBox(
+                  width: 20,
                 ),
-                onPressed: () {
-                  print("hello");
-                },
-              ),
-            ],
-          )),
-    )
-    
-    
-    
-    
-    ;
-    
-    
-    
-    
-}
-else{
-
-
-
-
- return ShowUp(
-      delay: delayAmount + 500,
-      child: Container(
-          alignment: Alignment.topLeft,
-          padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: <Widget>[
-              
-              MaterialButton(
-                shape: RoundedRectangleBorder(
-                    borderRadius: new BorderRadius.circular(18.0)),
-                elevation: 5.0,
-                minWidth: 150,
-                height: 42.0,
-                color: colorCustom,
-                child: Row(
-                  children: <Widget>[
-                    Icon(
-                      Icons.play_arrow,
-                      color: Colors.white,
-                    ),
-                    SizedBox(
-                      width: 10,
-                    ),
-                    Text('Play',
-                        style:
-                            new TextStyle(fontSize: 20.0, color: Colors.white)),
-                  ],
+                MaterialButton(
+                  shape: RoundedRectangleBorder(
+                      borderRadius: new BorderRadius.circular(18.0)),
+                  elevation: 5.0,
+                  minWidth: 150,
+                  height: 42.0,
+                  color: colorCustom,
+                  child: Row(
+                    children: <Widget>[
+                      Icon(
+                        Icons.play_arrow,
+                        color: Colors.white,
+                      ),
+                      SizedBox(
+                        width: 10,
+                      ),
+                      Text('Play',
+                          style: new TextStyle(
+                              fontSize: 20.0, color: Colors.white)),
+                    ],
+                  ),
+                  onPressed: () {
+                    print("hello");
+                  },
                 ),
-                onPressed: () {
-                  print("hello");
-                },
-              ),
-            ],
-          )),
-    );
-
-
-
-
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+              ],
+            )),
+      );
+    } else {
+      return ShowUp(
+        delay: delayAmount + 500,
+        child: Container(
+            alignment: Alignment.topLeft,
+            padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: <Widget>[
+                MaterialButton(
+                  shape: RoundedRectangleBorder(
+                      borderRadius: new BorderRadius.circular(18.0)),
+                  elevation: 5.0,
+                  minWidth: 150,
+                  height: 42.0,
+                  color: colorCustom,
+                  child: Row(
+                    children: <Widget>[
+                      Icon(
+                        Icons.play_arrow,
+                        color: Colors.white,
+                      ),
+                      SizedBox(
+                        width: 10,
+                      ),
+                      Text('Play',
+                          style: new TextStyle(
+                              fontSize: 20.0, color: Colors.white)),
+                    ],
+                  ),
+                  onPressed: () {
+                    print("hello");
+                  },
+                ),
+              ],
+            )),
+      );
+    }
   }
 
   @override

@@ -47,3 +47,47 @@ Future<QueryResult> allMerchandise() async {
 else{
   return(result.data.data['tokenAuth']['token']);}*/
 }
+
+
+
+
+
+
+
+
+
+
+
+Future<QueryResult> buyMerch(String merchId) async {
+  String buyMerch = '''
+
+      mutation {
+        buyMerch(merchId: $merchId){
+            transaction{
+              id
+              amount
+              time
+            }
+          }
+        }
+          
+
+    ''';
+  print(buyMerch);
+
+  print("/*-/*-/*-/*-Trying to buy game/*-/*-/*-/*-/*-/*-");
+
+  GraphQLClient _client = graphQLConfiguration.clientToQuery();
+  QueryResult result = await _client.mutate(
+    MutationOptions(
+      document: buyMerch,
+    ),
+  );
+  //print(json.decode(result.data.data));
+  print(
+      "qqqqqqqqqqqq----------------------------------------------qqqqqqqqqqqqqqq");
+
+
+  return result;
+ 
+}

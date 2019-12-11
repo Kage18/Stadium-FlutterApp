@@ -9,6 +9,7 @@ import 'package:stadium/config/config.dart';
 import 'package:stadium/ui/profilePage.dart';
 import '../database.dart';
 import 'dart:async';
+import 'friendsPage.dart';
 import 'gamesListPage.dart';
 import 'landingPage.dart';
 import 'libraryPage.dart';
@@ -309,9 +310,11 @@ class _HomePageState extends State<HomePage> {
           user: user,
         ),
       );
-      Navigator.of(context).push(route).whenComplete(() {setState((){
-        getUsername();
-      });});
+      Navigator.of(context).push(route).whenComplete(() {
+        setState(() {
+          getUsername();
+        });
+      });
     }
   }
 
@@ -394,14 +397,33 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
+
+  _routeToFriends() async {
+
+
+var route = new MaterialPageRoute(
+          builder: (BuildContext context) => new FriendsPage(
+          ),
+        );
+        Navigator.of(context).push(route);
+
+
+
+  }
+
+
+
+
+
+
+
   _logout() async {
     await DBProvider.db.deleteTable('Parameters');
     var route = new MaterialPageRoute(
-          builder: (BuildContext context) => new LandingPage(),
-        );
-        Navigator.of(context)
-            .pushAndRemoveUntil(route, (Route<dynamic> route) => false);
-
+      builder: (BuildContext context) => new LandingPage(),
+    );
+    Navigator.of(context)
+        .pushAndRemoveUntil(route, (Route<dynamic> route) => false);
   }
 
   /* Widget _showBackground() {
@@ -526,6 +548,18 @@ class _HomePageState extends State<HomePage> {
                   _routeToLibrary();
                 },
               ),
+              ListTile(
+                leading: Icon(
+                  Icons.person_add,
+                ),
+                title: Text(
+                  'Friends',
+                  style: TextStyle(fontSize: 16),
+                ),
+                onTap: () {
+                  _routeToFriends();
+                },
+              ),
               Divider(
                 height: 15,
                 thickness: 3,
@@ -539,7 +573,7 @@ class _HomePageState extends State<HomePage> {
                   style: TextStyle(fontSize: 16),
                 ),
                 onTap: () {
-                 _logout();
+                  _logout();
                 },
               ),
             ],

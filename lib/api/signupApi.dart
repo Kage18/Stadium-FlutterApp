@@ -2,7 +2,8 @@ import 'dart:async';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import '../main.dart';
 
-Future<QueryResult> signup(String username, String email, String password, String dob, String phone, int gender) async {
+Future<QueryResult> signup(String username, String email, String password,
+    String dob, String phone, int gender) async {
   String signupMutation = '''
 
       mutation{

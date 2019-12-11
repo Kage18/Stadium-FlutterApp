@@ -1,6 +1,11 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:graphql_flutter/graphql_flutter.dart';
+import 'package:stadium/api/merchandiseApi.dart';
 import 'package:stadium/config/config.dart';
+
+import 'homePage.dart';
 
 class ShowUp extends StatefulWidget {
   final Widget child;
@@ -69,6 +74,66 @@ class _MerchandisePageState extends State<MerchandisePage> {
   @override
   void initState() {
     super.initState();
+  }
+void toast(String message) {
+    Fluttertoast.showToast(
+        msg: message,
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.CENTER,
+        backgroundColor: Colors.grey,
+        textColor: Colors.black,
+        fontSize: 16.0);
+  }
+
+
+buy() async {
+    QueryResult result = await buyMerch(widget.merchandise['id']);
+
+    if (result.hasErrors) {
+      print("Sorry bruh...");
+      toast(result.errors[0].toString());
+    } else {
+      toast("Successfully Bought");
+      var route = new MaterialPageRoute(
+        builder: (BuildContext context) => new HomePage(),
+      );
+      Navigator.of(context)
+          .pushAndRemoveUntil(route, (Route<dynamic> route) => false);
+    }
+  }
+
+
+
+
+  void _showDialog() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: new Text("Buy " + widget.merchandise['name']),
+          content: new Text("Buy " +
+              widget.merchandise['name'] +
+              "for Rs. " +
+              widget.merchandise['price'].toString() +
+              " ?"),
+          actions: <Widget>[
+            new FlatButton(
+              child: new Text("Cancel"),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            new FlatButton(
+              child: new Text("Confirm"),
+              onPressed: () {
+               buy();
+                //Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
   }
 
   Widget _showImage() {
@@ -146,6 +211,7 @@ class _MerchandisePageState extends State<MerchandisePage> {
                   ],
                 ),
                 onPressed: () {
+                  _showDialog();
                   print("hello");
                 },
               ),

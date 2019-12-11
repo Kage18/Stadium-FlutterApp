@@ -33,13 +33,15 @@ class _LibraryPageState extends State<LibraryPage> {
           game['game']['name'],
           style: TextStyle(fontSize: 22, fontWeight: FontWeight.w400),
         ),
-        subtitle: new Text(
-          "Hours Played: " + game['hoursPlayed'].toString()+ "\n"
-          "Rating: " + game['rating'].toString()
+        subtitle: new Text("Hours Played: " +
+                game['hoursPlayed'].toString() +
+                "\n"
+                    "Rating: " +
+                game['rating'].toString()
 
-          /* style: TextStyle(
+            /* style: TextStyle(
           fontSize: 22, fontWeight: FontWeight.w400), */
-        ),
+            ),
         trailing: Icon(
           Icons.play_arrow,
           color: colorCustom[600],
@@ -56,16 +58,14 @@ class _LibraryPageState extends State<LibraryPage> {
           centerTitle: true,
           title: new Text("Your Games"),
         ),
-        body: 
-        
-        
-                //widget.library["gameOwned"].length == 0 ? Text("You don't own any games :(", style: TextStyle(color: Colors.black, fontSize: 25),) :
+        body:
 
-        
-        ListView.builder(
-            itemCount: widget.library['gameOwned'].length,
-            itemBuilder: (BuildContext context, int index) {
-              return libraryTile(widget.library['gameOwned'][index]);
-            }));
+            //widget.library["gameOwned"].length == 0 ? Text("You don't own any games :(", style: TextStyle(color: Colors.black, fontSize: 25),) :
+
+            ListView.builder(
+                itemCount: widget.library['gameOwned'].length,
+                itemBuilder: (BuildContext context, int index) {
+                  return libraryTile(widget.library['gameOwned'][index]);
+                }));
   }
 }

@@ -31,18 +31,5 @@ Future<QueryResult> login(String email, String password) async {
   print(
       "qqqqqqqqqqqq----------------------------------------------qqqqqqqqqqqqqqq");
 
-  //print(result.data.data['tokenAuth']['token']);
-  //print(result.errors[0]);
-
-  // print(result.data.data['tokenAuth']['token']);
   return result;
-  /* print("qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq");
-  if(result.data.error){
-    return null;
-  }
-  if(result.data.data['tokenAuth'] == null){
-    return null;
-  }
-else{
-  return(result.data.data['tokenAuth']['token']);}*/
 }
