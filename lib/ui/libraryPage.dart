@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:stadium/config/config.dart';
 
 class LibraryPage extends StatefulWidget {
   LibraryPage({this.library});
@@ -33,14 +34,15 @@ class _LibraryPageState extends State<LibraryPage> {
           style: TextStyle(fontSize: 22, fontWeight: FontWeight.w400),
         ),
         subtitle: new Text(
-          "Played: " + game['hoursPlayed'],
+          "Hours Played: " + game['hoursPlayed'].toString()+ "\n"
+          "Rating: " + game['rating'].toString()
 
           /* style: TextStyle(
           fontSize: 22, fontWeight: FontWeight.w400), */
         ),
         trailing: Icon(
           Icons.play_arrow,
-          color: Colors.blue,
+          color: colorCustom[600],
           size: 50,
         ),
       ),
@@ -54,7 +56,13 @@ class _LibraryPageState extends State<LibraryPage> {
           centerTitle: true,
           title: new Text("Your Games"),
         ),
-        body: ListView.builder(
+        body: 
+        
+        
+                //widget.library["gameOwned"].length == 0 ? Text("You don't own any games :(", style: TextStyle(color: Colors.black, fontSize: 25),) :
+
+        
+        ListView.builder(
             itemCount: widget.library['gameOwned'].length,
             itemBuilder: (BuildContext context, int index) {
               return libraryTile(widget.library['gameOwned'][index]);

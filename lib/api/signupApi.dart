@@ -35,6 +35,7 @@ Future<QueryResult> signup(String username, String email, String password, Strin
   //print(result.errors[0]);
 
   // print(result.data.data['tokenAuth']['token']);
+  print(result.errors);
   return result;
   /* print("qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq");
   if(result.data.error){

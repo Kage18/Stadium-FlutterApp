@@ -14,12 +14,14 @@ Future<QueryResult> profileData() async {
               phoneNo
               bio
               joined
-              avatar 
+              avatar{
+                url
+              } 
             }
           }
 
     ''';
-  //print(signupMutation);
+  print(profile);
 
   print("/*-/*-/*-/*-Trying to get Data/*-/*-/*-/*-/*-/*-");
 

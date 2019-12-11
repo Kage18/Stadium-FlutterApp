@@ -5,12 +5,10 @@ import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:stadium/api/gamesApi.dart';
 import 'package:stadium/api/merchandiseApi.dart';
 import 'package:stadium/api/userApi.dart';
+import 'package:stadium/config/config.dart';
 import 'package:stadium/ui/profilePage.dart';
-
 import '../database.dart';
-
 import 'dart:async';
-
 import 'gamesListPage.dart';
 import 'landingPage.dart';
 import 'libraryPage.dart';
@@ -304,13 +302,16 @@ class _HomePageState extends State<HomePage> {
       setState(() {
         _isLoading = false;
       });
-
+      print(user);
+      print(user["me"]["avatar"][0]["url"]);
       var route = new MaterialPageRoute(
         builder: (BuildContext context) => new ProfilePage(
           user: user,
         ),
       );
-      Navigator.of(context).push(route);
+      Navigator.of(context).push(route).whenComplete(() {setState((){
+        getUsername();
+      });});
     }
   }
 
@@ -403,11 +404,11 @@ class _HomePageState extends State<HomePage> {
 
   }
 
-  Widget _showBackground() {
+  /* Widget _showBackground() {
     return Container(
       color: Colors.black,
     );
-  }
+  } */
 
   Widget _showBody() {
     return new Container(
@@ -455,6 +456,7 @@ class _HomePageState extends State<HomePage> {
             padding: EdgeInsets.zero,
             children: <Widget>[
               DrawerHeader(
+                padding: EdgeInsets.fromLTRB(20, 20, 0, 0),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
@@ -485,7 +487,7 @@ class _HomePageState extends State<HomePage> {
                   ],
                 ),
                 decoration: BoxDecoration(
-                  color: Colors.blue,
+                  color: colorCustom[800],
                 ),
               ),
               ListTile(

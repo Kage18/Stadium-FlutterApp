@@ -3,13 +3,14 @@ import 'package:graphql_flutter/graphql_flutter.dart';
 import '../main.dart';
 
 Future<QueryResult> allMerchandise() async {
-  String allGames = '''
+  String allMerchandise = '''
 
       query{
           merchs{
               id
               desc
               name
+              price
               images{
                 url
               } 
@@ -24,7 +25,7 @@ Future<QueryResult> allMerchandise() async {
   GraphQLClient _client = graphQLConfiguration.clientToQuery();
   QueryResult result = await _client.query(
     QueryOptions(
-      document: allGames,
+      document: allMerchandise,
     ),
   );
 

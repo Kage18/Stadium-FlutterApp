@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:stadium/config/config.dart';
+import 'package:stadium/model/parameterModel.dart';
+
+import '../database.dart';
 
 class ProfilePage extends StatefulWidget {
   ProfilePage({this.user});
@@ -9,8 +13,42 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
+
+
+
+
+
+
+
+
+
+
+
+  
+  saveUsername() async {
+    print(
+        "----------------------------Trying to save Username-----------------");
+ Parameter userameParameter = new Parameter();
+        userameParameter.parameterName = 'Username';
+        userameParameter.parameterValue = widget.user['me']['Customer']['username'];
+        print(userameParameter.parameterValue);
+        print(
+            "----------------------------Trying to store username-----------------");
+
+        await DBProvider.db.newParameter(userameParameter);
+
+        print(
+            "----------------------------Username Stored successfully-----------------");
+
+    print(
+        "----------------------------Saved Username successfully-----------------");
+  }
+
+
+
   @override
   void initState() {
+saveUsername();
     super.initState();
   }
 
@@ -24,7 +62,8 @@ class _ProfilePageState extends State<ProfilePage> {
               shape: BoxShape.circle,
               image: new DecorationImage(
                   fit: BoxFit.fill,
-                  image: new NetworkImage("https://i.imgur.com/BoN9kdC.png")))),
+                  image: widget.user["me"]["avatar"] == null ? new NetworkImage("https://i.imgur.com/BoN9kdC.png") : new NetworkImage(serverUrl+widget.user["me"]["avatar"][0]["url"].toString())))),
+                  //image: new NetworkImage("https://i.imgur.com/BoN9kdC.png")))),
     );
   }
 
@@ -149,6 +188,7 @@ class _ProfilePageState extends State<ProfilePage> {
       ),
       body: ListView(
         children: <Widget>[
+          SizedBox(height: 10,),
           _showImage(),
           _showUsername(),
           _showDivider(),

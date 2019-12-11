@@ -1,13 +1,15 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:stadium/api/loginApi.dart';
 import 'package:stadium/api/signupApi.dart';
+import 'package:stadium/config/config.dart';
 import 'package:stadium/model/parameterModel.dart';
 import '../database.dart';
 import 'package:intl/intl.dart';
 import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-
 import 'homePage.dart';
 
 class LandingPage extends StatefulWidget {
@@ -197,7 +199,7 @@ class _LandingPageState extends State<LandingPage> {
           elevation: 5.0,
           minWidth: 200.0,
           height: 42.0,
-          color: Colors.blue,
+          color: colorCustom[700],
           child: _formMode == FormMode.LOGIN
               ? new Text("Login",
                   style: new TextStyle(fontSize: 20.0, color: Colors.white))
@@ -300,6 +302,12 @@ class _LandingPageState extends State<LandingPage> {
       if (result.hasErrors) {
         print("Sorry bruh...");
         toast(result.errors[0].toString());
+
+        Timer(Duration(seconds: 3), () {
+          setState(() {
+            _isLoading = false;
+          });
+        });
       } else {
         String token = result.data.data['tokenAuth']['token'];
         token = 'JWT ' + token;
@@ -334,6 +342,12 @@ class _LandingPageState extends State<LandingPage> {
         Navigator.of(context)
             .pushAndRemoveUntil(route, (Route<dynamic> route) => false);
       }
+    } else {
+      Timer(Duration(seconds: 3), () {
+        setState(() {
+          _isLoading = false;
+        });
+      });
     }
   }
 
@@ -367,7 +381,7 @@ class _LandingPageState extends State<LandingPage> {
       print("****************************************");
       print(gender);
       print(formatted);
-     /*  print(int.parse(_phone));
+      /*  print(int.parse(_phone));
       int x = int.parse(_phone); */
       QueryResult result =
           await signup(_username, _email, _password, formatted, _phone, gender);
@@ -376,6 +390,12 @@ class _LandingPageState extends State<LandingPage> {
       if (result.hasErrors) {
         print("Sorry bruh...");
         toast(result.errors[0].toString());
+
+        Timer(Duration(seconds: 3), () {
+          setState(() {
+            _isLoading = false;
+          });
+        });
       } else {
         String username = result.data.data['createUser']['user']['username'];
         Parameter userameParameter = new Parameter();
@@ -411,6 +431,12 @@ class _LandingPageState extends State<LandingPage> {
 
         _showDialog();
       }
+    } else {
+      Timer(Duration(seconds: 3), () {
+        setState(() {
+          _isLoading = false;
+        });
+      });
     }
   }
 

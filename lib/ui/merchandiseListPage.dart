@@ -75,6 +75,8 @@ class _MerchandiseListPageState extends State<MerchandiseListPage> {
           title: new Text("Merchandise"),
         ),
         body:
+                widget.allMerchandise["merchs"].length == 0 ? Text("Sorry, No Merch to display :(", style: TextStyle(color: Colors.black, fontSize: 25),) :
+
             /*  Column(
         children: <Widget>[
           Text(widget.games['games'][0]['images'][0]['url'].toString()),

@@ -128,9 +128,9 @@ class _MerchandisePageState extends State<MerchandisePage> {
                 shape: RoundedRectangleBorder(
                     borderRadius: new BorderRadius.circular(18.0)),
                 elevation: 5.0,
-                minWidth: 250,
+                minWidth: 200,
                 height: 50.0,
-                color: Colors.blue,
+                color: colorCustom,
                 child: Row(
                   children: <Widget>[
                     Icon(
