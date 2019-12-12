@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
-// String serverApi = "http://10.0.32.170:8080/graphql/";
-// String serverUrl = "http://10.0.32.170:8080";
+String serverApi = "http://10.0.32.170:8000/graphql/";
+String serverUrl = "http://10.0.32.170:8000";
 
-String serverApi = "http://10.0.35.200:8000/graphql/";
-String serverUrl = "http://10.0.35.200:8000";
+// String serverApi = "http://10.0.35.200:8000/graphql/";
+// String serverUrl = "http://10.0.35.200:8000";
 
 Map<int, Color> myColor = {
   50: Color.fromRGBO(206, 36, 66, .1),

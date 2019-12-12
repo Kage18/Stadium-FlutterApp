@@ -3,7 +3,9 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
+import 'package:stadium/api/containerApi.dart';
 import 'package:stadium/api/gamesApi.dart';
+import 'package:stadium/api/userApi.dart';
 import 'package:stadium/config/config.dart';
 import 'package:stadium/ui/playPage.dart';
 
@@ -73,6 +75,7 @@ class GamePage extends StatefulWidget {
 
 class _GamePageState extends State<GamePage> {
   int delayAmount = 600;
+  bool _isLoading = false;
 
   @override
   void initState() {
@@ -89,6 +92,24 @@ class _GamePageState extends State<GamePage> {
         fontSize: 16.0);
   }
 
+
+
+  Widget _showCircularProgress() {
+    if (_isLoading) {
+      return Center(
+        child: CircularProgressIndicator(),
+      );
+    }
+    return Container(
+      height: 0.0,
+      width: 0.0,
+    );
+  }
+
+
+
+
+
   buy() async {
     QueryResult result = await buyGame(widget.game['id']);
 
@@ -103,6 +124,71 @@ class _GamePageState extends State<GamePage> {
       Navigator.of(context)
           .pushAndRemoveUntil(route, (Route<dynamic> route) => false);
     }
+  }
+
+
+
+
+  _routeToPlay(String gameId) async{
+
+     setState(() {
+      _isLoading = true;
+    });
+    Timer(Duration(seconds: 10), () {
+          setState(() {
+            _isLoading = false;
+          });
+        });
+
+  print(gameId);
+
+
+
+
+
+String userId;
+
+QueryResult result = await getUserId();
+
+    if (result.hasErrors) {
+      print("Sorry bruh...");
+      toast(result.errors[0].toString());
+    } else {
+     userId = result.data.data["me"]["id"];
+    }
+
+
+
+
+
+
+
+
+
+print(userId+"/////////////////////////");
+print(gameId);
+
+
+
+
+
+
+
+
+
+   dynamic url = await getContainerUrl(gameId, userId);
+   String containerUrl = url["url"];
+
+
+
+         var route = new MaterialPageRoute(
+          builder: (BuildContext context) => new PlayPage(
+            url: containerUrl,
+          ),
+        );
+        Navigator.of(context)
+            .push(route);
+
   }
 
   void _showDialog() {
@@ -195,7 +281,9 @@ class _GamePageState extends State<GamePage> {
             alignment: Alignment.topLeft,
             padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
             child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
+                
                 MaterialButton(
                   shape: RoundedRectangleBorder(
                       borderRadius: new BorderRadius.circular(18.0)),
@@ -222,41 +310,36 @@ class _GamePageState extends State<GamePage> {
                     _showDialog();
                   },
                 ),
-                SizedBox(
-                  width: 20,
-                ),
-                MaterialButton(
-                  shape: RoundedRectangleBorder(
-                      borderRadius: new BorderRadius.circular(18.0)),
-                  elevation: 5.0,
-                  minWidth: 150,
-                  height: 42.0,
-                  color: colorCustom,
-                  child: Row(
-                    children: <Widget>[
-                      Icon(
-                        Icons.play_arrow,
-                        color: Colors.white,
-                      ),
-                      SizedBox(
-                        width: 10,
-                      ),
-                      Text('Play',
-                          style: new TextStyle(
-                              fontSize: 20.0, color: Colors.white)),
-                    ],
-                  ),
-                  // onPressed: () {
-                  //   print("hello");
-                  // },
-                  onPressed: () {
-                    var route = new MaterialPageRoute(
-          builder: (BuildContext context) => new PlayPage(),
-        );
-        Navigator.of(context)
-            .push(route);
-                  },
-                ),
+                // SizedBox(
+                //   width: 20,
+                // ),
+                // MaterialButton(
+                //   shape: RoundedRectangleBorder(
+                //       borderRadius: new BorderRadius.circular(18.0)),
+                //   elevation: 5.0,
+                //   minWidth: 150,
+                //   height: 42.0,
+                //   color: colorCustom,
+                //   child: Row(
+                //     children: <Widget>[
+                //       Icon(
+                //         Icons.play_arrow,
+                //         color: Colors.white,
+                //       ),
+                //       SizedBox(
+                //         width: 10,
+                //       ),
+                //       Text('Play',
+                //           style: new TextStyle(
+                //               fontSize: 20.0, color: Colors.white)),
+                //     ],
+                //   ),
+                 
+                //   onPressed: () {
+                //       _routeToPlay(widget.game["id"]);
+               
+                //   },
+                // ),
               ],
             )),
       );
@@ -290,21 +373,27 @@ class _GamePageState extends State<GamePage> {
                               fontSize: 20.0, color: Colors.white)),
                     ],
                   ),
-                  // onPressed: () {
-                  //   print("hello");
-                  // },
-                  onPressed: () {
-                    var route = new MaterialPageRoute(
-          builder: (BuildContext context) => new PlayPage(),
-        );
-        Navigator.of(context)
-            .push(route);
+                   onPressed: () {
+                      _routeToPlay(widget.game["id"]);
+               
                   },
+               
                 ),
               ],
             )),
       );
     }
+  }
+
+  Widget _showBody(){
+    return  ListView(
+        children: <Widget>[
+          _showImage(),
+          _showName(),
+          _showDescription(),
+          _showButtons(),
+        ],
+      );
   }
 
   @override
@@ -314,14 +403,10 @@ class _GamePageState extends State<GamePage> {
         centerTitle: true,
         title: new Text(widget.game['name']),
       ),
-      body: ListView(
-        children: <Widget>[
-          _showImage(),
-          _showName(),
-          _showDescription(),
-          _showButtons(),
-        ],
-      ),
+      body:Stack(children: <Widget>[
+        _showBody(),
+        _showCircularProgress(),
+      ],)
     );
   }
 }
