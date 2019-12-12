@@ -5,6 +5,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:stadium/api/gamesApi.dart';
 import 'package:stadium/config/config.dart';
+import 'package:stadium/ui/playPage.dart';
 
 import 'homePage.dart';
 
@@ -245,8 +246,15 @@ class _GamePageState extends State<GamePage> {
                               fontSize: 20.0, color: Colors.white)),
                     ],
                   ),
+                  // onPressed: () {
+                  //   print("hello");
+                  // },
                   onPressed: () {
-                    print("hello");
+                    var route = new MaterialPageRoute(
+          builder: (BuildContext context) => new PlayPage(),
+        );
+        Navigator.of(context)
+            .push(route);
                   },
                 ),
               ],
@@ -282,8 +290,15 @@ class _GamePageState extends State<GamePage> {
                               fontSize: 20.0, color: Colors.white)),
                     ],
                   ),
+                  // onPressed: () {
+                  //   print("hello");
+                  // },
                   onPressed: () {
-                    print("hello");
+                    var route = new MaterialPageRoute(
+          builder: (BuildContext context) => new PlayPage(),
+        );
+        Navigator.of(context)
+            .push(route);
                   },
                 ),
               ],
